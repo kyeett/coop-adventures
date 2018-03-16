@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR!</title>
+    <script type="text/javascript" src="{{ url_for('static',filename='live.js') }}"></script>
+</head>
+<body>
+
+<style type="text/css">
+
+body {
+    font-family: verdana;
+}
+
+#board {
+    width: 1024px;
+    height: 700px;
+    border: 1px solid black;
+    background-color: #ffffcc;
+}
+
+#menu {
+    border-right: 1px solid black;
+    height: 100%;
+    float: left;
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.border-top {
+    border-top: 1px solid black;
+}
+
+.image_container {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.image1 {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.image2 {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+  width: 59px;
+  height: 80px;
+}
+
+
+</style>
+<div id="board">
+    <div id="menu">
+        <div class="title">Join game</div>
+        <div class="image_container">
+            <a href="../joined"><img class="image1" src="{{ url_for('static',filename='code.png') }}"></a>
+            <a href="../joined"><img class="image2" src="{{ url_for('static',filename='zombie_small.png') }}"></a>
+        </div>
+        <div class="title border-top">Players</div>
+    </div>
+</div>
+
+</body>
+</html>
