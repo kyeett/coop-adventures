@@ -3,58 +3,58 @@
 <head>
     <title>QR!</title>
     <script type="text/javascript" src="{{ url_for('static',filename='live.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheet.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('http://' + document.domain + ':' + location.port)
+        console.log("connecting");
+        socket.on('connect', function() {
+          console.log("connected");
+            socket.emit('connected', {data: 'I\'m connected!'});
+        });
+
+        socket.on('move_broadcast', function(data) {
+          console.log("board!!!");
+            fieldSize = 100;
+            $(".playerMarker").css('top', data.y*fieldSize+"px");
+            $(".playerMarker").css('left', data.x*fieldSize+"px");
+
+            socket.emit('connected', {data: 'I\'m connected!'});
+        });
+
+
+    </script>
+    <script>
+      parentBorder = 1;
+      gridSize = 50;
+
+      $( function() {
+        $( ".player_square" ).draggable({
+          containment: "parent",
+          grid: [ 50, 50 ],
+          drag: function( event, ui ) {
+            gridX = (($(this).position().left - $(this).parent().position().left) - parentBorder)/gridSize;
+            gridY  = (($(this).position().top  - $(this).parent().position().top) - parentBorder)/gridSize;
+
+            if($(this).attr('grid-x') != gridX || $(this).attr('grid-y') != gridY ) {
+              console.log("Location");
+              console.log(gridX);
+              console.log(gridY);
+              socket.emit('move', {x: gridX, y: gridY});
+              $(this).attr('grid-x',gridX);
+              $(this).attr('grid-y',gridY);
+            }
+          }
+      });
+      } );
+    </script>
+
 </head>
 <body>
-
-<style type="text/css">
-
-body {
-    font-family: verdana;
-}
-
-#board {
-    width: 1024px;
-    height: 700px;
-    border: 1px solid black;
-    background-color: #ffffcc;
-}
-
-#menu {
-    border-right: 1px solid black;
-    height: 100%;
-    float: left;
-}
-
-.title {
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-}
-
-.border-top {
-    border-top: 1px solid black;
-}
-
-.image_container {
-  position: relative;
-  top: 0;
-  left: 0;
-}
-.image1 {
-  position: relative;
-  top: 0;
-  left: 0;
-}
-.image2 {
-  position: absolute;
-  top: 40px;
-  left: 60px;
-  width: 59px;
-  height: 80px;
-}
-
-
-</style>
 <div id="board">
     <div id="menu">
         <div class="title">Join game</div>
@@ -64,6 +64,17 @@ body {
         </div>
         <div class="title border-top">Players</div>
     </div>
+    <div id="field">
+        <div class="playerMarker">
+
+        </div>
+    </div>
+</div>
+
+<div id="drag_area">
+  <div class="player_square" class="ui-widget-content">
+    <p>Drag me around</p>
+  </div>
 </div>
 
 </body>
